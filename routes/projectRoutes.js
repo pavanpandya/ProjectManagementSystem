@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const auth = require("../middleware/auth");
 const { body, validationResult } = require("express-validator");
+const User = require("../models/user");
 
 const Project = require("../models/project");
 
@@ -57,7 +58,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, description, start_date, end_date, faculty_id} = req.body;
+    const { title, description, start_date, end_date, faculty_id, capacity } = req.body;
     // console.log(req.user);
     // console.log(req.user.userId);
     const leader = req.user.userId;
@@ -69,7 +70,8 @@ router.post(
         start_date,
         end_date,
         leader,
-        students: [leader,],
+        capacity,
+        students: [leader],
         status: "pending",
         invite_code: generateInviteCode(),
       });
@@ -103,13 +105,16 @@ router.post("/:id/approve", auth, async (req, res) => {
     if (project.status !== "pending") {
       return res.status(400).json({ msg: "Project is not pending" });
     }
-
+    // get role from user id
+    const user = await User.findById(req.user.userId);
+    // console.log(user);
     // only faculty can approve a project
-    if (req.user.role !== "faculty") {
+    if (user.role !== "faculty") {
       return res.status(401).json({ msg: "Unauthorized" });
     }
 
     project.status = "active";
+    project.approved = true;
 
     await project.save();
 
@@ -243,22 +248,21 @@ router.post("/:id/generate-code", auth, async (req, res) => {
     if (!project) {
       return res.status(404).json({ msg: "Project not found" });
     }
+    //get user role from user id
+    const user = await User.findById(req.user.userId);
 
     // Check if user is authorized to generate invite code
-    if (
-      project.leader.toString() !== user._id.toString() ||
-      user.role !== "faculty"
-    ) {
+    if (project.leader.toString() !== user.userId || user.role !== "faculty") {
       return res
         .status(401)
         .json({ msg: "Not authorized to generate invite code" });
     }
 
     // Generate invite code
-    const inviteCode = crypto.randomBytes(3).toString("hex");
+    const inviteCode = generateInviteCode();
 
     // Save invite code to project
-    project.inviteCode = inviteCode;
+    project.invite_code = inviteCode;
     await project.save();
 
     res.status(200).json({ inviteCode });
@@ -335,6 +339,30 @@ router.get("/leader/:id", auth, async (req, res) => {
     if (!project) {
       return res.status(404).json({ msg: "Project not found" });
     }
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// activate project
+router.get(":id/active", auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    // only leader can activate project
+    if (project.leader.toString() !== req.user.userId) {
+      return res
+        .status(401)
+        .json({ msg: "Not authorized to activate project" });
+    }
+
+    project.status = "active";
+    await project.save();
     res.json(project);
   } catch (err) {
     console.error(err.message);

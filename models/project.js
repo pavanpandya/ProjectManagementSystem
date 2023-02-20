@@ -45,6 +45,10 @@ const projectSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  capacity: {
+    type: Number,
+    default: 4,
+  },
 });
 
 
