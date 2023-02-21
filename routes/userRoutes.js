@@ -304,13 +304,12 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 // add multiple students from csv or excel file
-router.post("/add-students", upload.single("file"), async (req, res) => {
+router.post("/add-students", auth, upload.single("file"), async (req, res) => {
   try {
     // only admin or faculties can add students
     const user = await User.findById(req.user.userId);
-    if (user.role !== "admin") {
-      return res.status(401).json({ message: "Unauthorized" });
-    } else if (user.role !== "faculty") {
+    console.log(user);
+    if (user.role !== "admin" && user.role !== "faculty") {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
@@ -318,12 +317,12 @@ router.post("/add-students", upload.single("file"), async (req, res) => {
     const students = await csvtojson({
       // ignore first row
       ignoreEmpty: true,
-      ignoreColumns: /(name,email,enrollment_number)/,
+      ignoreColumns: /(email, name, enrollment_number)/,
     }).fromString(req.file.buffer.toString());
 
     // Create an array of user objects with the default password and the passwordChanged flag set to false
     const userObjects = students.map((student) => {
-      // console.log(student);
+      console.log(student);
       return {
         email: student.email,
         name: student.name,
