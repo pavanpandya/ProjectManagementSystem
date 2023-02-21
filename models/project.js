@@ -14,9 +14,15 @@ const projectSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  faculty_approval: {
+  faculty: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    default: undefined,
+    required: false, // change to true later
+  },
+  faculty_approval: {
+    type: Boolean,
+    default: false,
     required: false,
   },
   start_date: {
@@ -35,7 +41,7 @@ const projectSchema = new mongoose.Schema({
   ],
   status: {
     type: String,
-    enum: ["active", "pending", "inactive", "completed"],
+    enum: ["active", "pending", "inactive", "completed", "rejected", "approved"],
     default: "inactive",
   },
   invite_code: {

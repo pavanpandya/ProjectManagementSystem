@@ -29,7 +29,15 @@ router.post("/login", async (req, res) => {
 
     // If user doesn't exist, return an error
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email" });
+    }
+
+    // If the user has not changed their password yet, prompt them to do so
+    if (!user.passwordChanged) {
+      return res.status(200).json({
+        message:
+          "Please change your password by calling the /api/users/change-password route",
+      });
     }
 
     // Compare password hash with user password
@@ -38,14 +46,6 @@ router.post("/login", async (req, res) => {
     // If password doesn't match, return an error
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    // If the user has not changed their password yet, prompt them to do so
-    if (!user.passwordChanged) {
-      return res.status(200).json({
-        message:
-          "Please change your password by calling the /change-password endpoint",
-      });
     }
 
     // Generate JWT token for user
@@ -63,13 +63,12 @@ router.post("/login", async (req, res) => {
 });
 
 //change password
-router.post("/change-password", auth, async (req, res) => {
+router.post("/change-password", async (req, res) => {
   const { email, password, newPassword } = req.body;
-
   try {
     // Find user by email
     const user = await User.findOne({ email });
-
+    // console.log(user);
     // If user doesn't exist, return an error
     if (!user) {
       return res.status(401).json({ message: "Invalid email" });
@@ -148,6 +147,44 @@ router.post("/signup", async (req, res) => {
     await user.save();
 
     res.status(201).json({ message: "User created" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//Get all students
+router.get("/students", auth, async (req, res) => {
+  try {
+    // If user is not admin, return an error
+    const user = await User.findById(req.user.userId);
+    if (user.role !== "admin" && user.role !== "faculty") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Find all students and don't return their password
+    const students = await User.find({ role: "student" }).select("-password");
+
+    res.status(200).json({ students });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get all faculties
+router.get("/faculties", auth, async (req, res) => {
+  try {
+    // If user is not admin, return an error
+    const user = await User.findById(req.user.userId);
+    if (user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Find all faculty and don't return their password
+    const faculty = await User.find({ role: "faculty" }).select("-password");
+
+    res.status(200).json({ faculty });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

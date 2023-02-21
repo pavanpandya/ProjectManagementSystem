@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 const { json } = require("express");
 
 const Kanboard = require("../models/kanboard");
+const Project = require("../models/project");
 
 // Get the kanboard for a project
 // Only project members and faculty members can see the kanboard

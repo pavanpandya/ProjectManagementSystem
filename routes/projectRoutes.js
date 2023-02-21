@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/user");
 
 const Project = require("../models/project");
+const user = require("../models/user");
 
 // Get all projects
 router.get("/", async (req, res) => {
@@ -57,8 +58,22 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    // if student has already created or joined a project, they cannot create another project if the project is not completed
+    const user = await User.findById(req.user.userId);
+    if (user.role === "student") {
+      const project = await Project.findOne({
+        students: req.user.userId,
+        status: { $ne: "completed" },
+      });
+      if (project) {
+        return res
+          .status(400)
+          .json({ msg: "You have already joined a project" });
+      }
+    }
 
-    const { title, description, start_date, end_date, faculty_id, capacity } = req.body;
+    const { title, description, start_date, end_date, faculty_id, capacity } =
+      req.body;
     // console.log(req.user);
     // console.log(req.user.userId);
     const leader = req.user.userId;
@@ -130,6 +145,40 @@ router.post("/:id/approve", auth, async (req, res) => {
   }
 });
 
+// Reject a project
+router.post("/:id/reject", auth, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const project = await Project.findById(id);
+
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    // reject a project and only faculty can reject a project
+    const user = await User.findById(req.user.userId);
+    if (user.role !== "faculty") {
+      return res.status(401).json({ msg: "Unauthorized" });
+    }
+
+    project.status = "rejected";
+    project.approved = false;
+
+    await project.save();
+
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    res.status(500).send("Server Error");
+  }
+});
+
 // Join a project
 router.post("/:id/join", auth, async (req, res) => {
   const { id } = req.params;
@@ -171,6 +220,50 @@ router.post("/:id/join", auth, async (req, res) => {
     }
 
     project.students.push(req.user.userId);
+
+    await project.save();
+
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    res.status(500).send("Server Error");
+  }
+});
+
+// Leave a project
+router.post("/:id/leave", auth, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const project = await Project.findById(id);
+
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    if (project.leader.toString() === req.user.userId) {
+      return res.status(400).json({ msg: "Leader cannot leave the project" });
+    }
+
+    if (!project.students.includes(req.user.userId)) {
+      return res.status(400).json({ msg: "You are not in this project" });
+    }
+
+    const index = project.students.indexOf(req.user.userId);
+
+    project.students.splice(index, 1);
+
+    if (
+      project.invite_code === null &&
+      project.students.length < project.capacity
+    ) {
+      project.invite_code = generateInviteCode();
+    }
 
     await project.save();
 
@@ -252,10 +345,14 @@ router.post("/:id/generate-code", auth, async (req, res) => {
     const user = await User.findById(req.user.userId);
 
     // Check if user is authorized to generate invite code
-    if (project.leader.toString() !== user.userId || user.role !== "faculty") {
+    if (project.leader.toString() !== user.userId && user.role !== "faculty") {
       return res
         .status(401)
         .json({ msg: "Not authorized to generate invite code" });
+    }
+    // Check if project is full
+    if (project.students.length >= project.capacity) {
+      return res.status(400).json({ msg: "Project is full" });
     }
 
     // Generate invite code
@@ -346,6 +443,24 @@ router.get("/leader/:id", auth, async (req, res) => {
   }
 });
 
+// get project by faculty id
+router.get("/faculty/:id", auth, async (req, res) => {
+  try {
+    if (req.user.role !== "faculty" && req.user.role !== "admin") {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    const project = await Project.find({ faculty: req.params.id });
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // activate project
 router.get(":id/active", auth, async (req, res) => {
   try {
@@ -362,6 +477,82 @@ router.get(":id/active", auth, async (req, res) => {
     }
 
     project.status = "active";
+    await project.save();
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// deactivate project
+router.get(":id/inactive", auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    // only leader can deactivate project
+    if (project.leader.toString() !== req.user.userId) {
+      return res
+        .status(401)
+        .json({ msg: "Not authorized to deactivate project" });
+    }
+
+    project.status = "inactive";
+    await project.save();
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// get all projects where faculty is assigned and not null
+router.get("/faculty", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    if (user.role !== "faculty") {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    //get all projects where any faculty is assigned
+    const projects = await Project.find({ faculty: { $ne: null } });
+    if (!projects) {
+      return res.status(404).json({ msg: "Projects not found" });
+    }
+
+    res.json(projects);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+//faculty can assign project to himself
+router.put("/assign/:id", auth, async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    const faculty = await User.findById(req.user.userId);
+    if (!faculty) {
+      return res.status(404).json({ msg: "Faculty not found" });
+    }
+
+    if (faculty.role !== "faculty") {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    project.faculty = faculty._id;
     await project.save();
     res.json(project);
   } catch (err) {

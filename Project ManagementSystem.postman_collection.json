@@ -1,0 +1,729 @@
+{
+	"info": {
+		"_postman_id": "ad412833-186c-400d-a603-ef2afec8676e",
+		"name": "Project ManagementSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19308263"
+	},
+	"item": [
+		{
+			"name": "User Operations",
+			"item": [
+				{
+					"name": "Student Signup Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Deesha Patel",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "19bece54010@vsitr.ac.in",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Testing@123",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "student",
+									"type": "text"
+								},
+								{
+									"key": "enrollment_number",
+									"value": "19BECE54010",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Nisarg Shah",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "19bece54040@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Testing@123",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "enrollment_number",
+									"value": "19BECE54040",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Faculty Signup Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Amit Modi",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "apmodi@vsitr.ac.in",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Testing@123",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "faculty",
+									"type": "text"
+								},
+								{
+									"key": "enrollment_number",
+									"value": "19BECE54040",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "19bece54010@vsitr.ac.in",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Testing@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "19bece54040@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Testing@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Faculty Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "apmodi@vsitr.ac.in",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Testing@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Students",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/Project/ProjectManagementSystemBackend/file.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/add-students",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"add-students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Students",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Change User Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "gracelee@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "T3stP@ssw0rd",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "Testing@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/change-password",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/users/change-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "henrysmith@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "T3stP@ssw0rd",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "Testing@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/change-password",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Project Operations",
+			"item": [
+				{
+					"name": "Create Project",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YzNTQ0OTU1NDA1MDJkZjQxZThmMTQiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODkxMzM4LCJleHAiOjE2NzgxODczMzh9.IdxV44XagziLQMEndy6bfKi1UVKSqMjFzgNX77H1jIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YyMmI3MjE5ZjZlY2FlYTBkYzI5MDMiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODIyMTk3LCJleHAiOjE2NzY4MjU3OTd9.G-6rig_eraAbU_xpAcKXjTSolK1kyT5QGp9Ki73Ld7I",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "xyz",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "abc",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "faculty_id",
+									"value": "63f22b7219f6ecaea0dc2903",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/projects/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Project By ID",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YzNTQ4ZDU1NDA1MDJkZjQxZThmMTgiLCJlbWFpbCI6ImFwbW9kaUB2c2l0ci5hYy5pbiIsImlhdCI6MTY3Njg5MTM3MywiZXhwIjoxNjc4MTg3MzczfQ.kxsmkgDLRg8cv-06ReOzdbc0fNgXSTZ7XnHSrMBDvXw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YyMmI3MjE5ZjZlY2FlYTBkYzI5MDMiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODIyMTk3LCJleHAiOjE2NzY4MjU3OTd9.G-6rig_eraAbU_xpAcKXjTSolK1kyT5QGp9Ki73Ld7I",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:5000/api/projects/63f354f85540502df41e8f1c/approve",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								"63f354f85540502df41e8f1c",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Project By ID",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YzNWE3NGJmZjk0ZDAwNjNkNjZiNWMiLCJlbWFpbCI6IjE5YmVjZTU0MDEwQHZzaXRyLmFjLmluIiwiaWF0IjoxNjc2ODkyODA1LCJleHAiOjE2NzgxODg4MDV9.n6Doi1qZq86efIOvIuZGNKsocKh3KKAdUDg_F2lBz3w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YyMmI3MjE5ZjZlY2FlYTBkYzI5MDMiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODIyMTk3LCJleHAiOjE2NzY4MjU3OTd9.G-6rig_eraAbU_xpAcKXjTSolK1kyT5QGp9Ki73Ld7I",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "inviteCode",
+									"value": "uomhahmh4l",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/projects/63f354f85540502df41e8f1c/join",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								"63f354f85540502df41e8f1c",
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Projects",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YzNTQ0OTU1NDA1MDJkZjQxZThmMTQiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODkxMzM4LCJleHAiOjE2NzgxODczMzh9.IdxV44XagziLQMEndy6bfKi1UVKSqMjFzgNX77H1jIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YyMmI3MjE5ZjZlY2FlYTBkYzI5MDMiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODIyMTk3LCJleHAiOjE2NzY4MjU3OTd9.G-6rig_eraAbU_xpAcKXjTSolK1kyT5QGp9Ki73Ld7I",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/projects/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get A Project By ID",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YzNTQ0OTU1NDA1MDJkZjQxZThmMTQiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODkxMzM4LCJleHAiOjE2NzgxODczMzh9.IdxV44XagziLQMEndy6bfKi1UVKSqMjFzgNX77H1jIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YyMmI3MjE5ZjZlY2FlYTBkYzI5MDMiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODIyMTk3LCJleHAiOjE2NzY4MjU3OTd9.G-6rig_eraAbU_xpAcKXjTSolK1kyT5QGp9Ki73Ld7I",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/projects/63f354f85540502df41e8f1c",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								"63f354f85540502df41e8f1c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project By Leader ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2YzNTQ0OTU1NDA1MDJkZjQxZThmMTQiLCJlbWFpbCI6Im5pc2FyZzA2MDZAZ21haWwuY29tIiwiaWF0IjoxNjc2ODkxMzM4LCJleHAiOjE2NzgxODczMzh9.IdxV44XagziLQMEndy6bfKi1UVKSqMjFzgNX77H1jIo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/projects/leader/63f22b7219f6ecaea0dc2903",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								"leader",
+								"63f22b7219f6ecaea0dc2903"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unassigned Projects",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Faculty can assign project to himself",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
