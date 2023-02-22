@@ -1,0 +1,151 @@
+[{
+  "_id": {
+    "$oid": "63f354495540502df41e8f14"
+  },
+  "name": "Nisarg Shah",
+  "email": "nisarg0606@gmail.com",
+  "password": "$2a$12$0tKTYPI.82Et26Fndell5ukeTNlExGA.EuDFwOtr9WVT9S300D5xW",
+  "role": "student",
+  "enrollment_number": "19BECE54040",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f3548d5540502df41e8f18"
+  },
+  "name": "Amit Modi",
+  "email": "apmodi@vsitr.ac.in",
+  "password": "$2a$12$fQcEEQ2t9rtAtLZ.OmKPPO3aNd3ZHnRiwun1XfgQe60qvA1TUN34K",
+  "role": "faculty",
+  "__v": 0,
+  "passwordChanged": true
+},{
+  "_id": {
+    "$oid": "63f35a74bff94d0063d66b5c"
+  },
+  "name": "Deesha Patel",
+  "email": "19bece54010@vsitr.ac.in",
+  "password": "$2a$12$weNwCUfGGGjjcMhNq4pPxuA4pGl5GOJxCUAXR0pi9cptXH9Fmn.1.",
+  "role": "student",
+  "enrollment_number": "19BECE54010",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab52588"
+  },
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN101",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab52589"
+  },
+  "name": "Jane Doe",
+  "email": "janedoe@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN102",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab5258a"
+  },
+  "name": "Bob Smith",
+  "email": "bobsmith@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN103",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab5258b"
+  },
+  "name": "Alice Wilson",
+  "email": "alicewilson@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN104",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab5258c"
+  },
+  "name": "Charlie Brown",
+  "email": "charliebrown@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN105",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab5258d"
+  },
+  "name": "David Smith",
+  "email": "davidsmith@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN106",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab5258e"
+  },
+  "name": "Ellie Wilson",
+  "email": "elliewilson@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN107",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab5258f"
+  },
+  "name": "Frank Jones",
+  "email": "frankjones@example.com",
+  "password": "T3stP@ssw0rd",
+  "role": "student",
+  "enrollment_number": "EN108",
+  "passwordChanged": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab52590"
+  },
+  "name": "Grace Lee",
+  "email": "gracelee@example.com",
+  "password": "$2a$12$kGSOTArEIRGhPjRskmB4me2wjVtBgC9OX5O68BkLgoVsduy0XNbsO",
+  "role": "student",
+  "enrollment_number": "EN109",
+  "passwordChanged": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f39f84777df6d3fab52591"
+  },
+  "name": "Henry Smith",
+  "email": "henrysmith@example.com",
+  "password": "$2a$12$51/mLYiReENclIX.XhAQWO9pPBbaBUUjocbJCrDItSS5V.A0B1F2.",
+  "role": "student",
+  "enrollment_number": "EN110",
+  "passwordChanged": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63f3a0700cbc81dd4fae18ef"
+  },
+  "name": "Nisarg Shah",
+  "email": "19bece54040@gmail.com",
+  "password": "$2a$12$CBzkob4hsuEGXi/W7TMMfuHSVfTi3vD/BxJG7SJdqr5ucjf8KQ.Mq",
+  "role": "admin",
+  "passwordChanged": true,
+  "__v": 0
+}]
