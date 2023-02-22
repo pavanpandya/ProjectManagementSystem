@@ -20,19 +20,6 @@ const projectSchema = new mongoose.Schema({
     default: undefined,
     required: false, // change to true later
   },
-  faculty_approval: {
-    type: Boolean,
-    default: false,
-    required: false,
-  },
-  start_date: {
-    type: Date,
-    required: false,
-  },
-  end_date: {
-    type: Date,
-    required: false,
-  },
   students: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -54,6 +41,22 @@ const projectSchema = new mongoose.Schema({
   capacity: {
     type: Number,
     default: 4,
+  },
+  report_uploded: {
+    type: Boolean,
+    default: false,
+  },
+  repository_link: {
+    type: String,
+    default: "",
+  },
+  report_link: {
+    type: String,
+    default: "",
+  },
+  presentation_link: {
+    type: String,
+    default: "",
   },
 });
 

@@ -42,8 +42,17 @@ const UserSchema = new mongoose.Schema({
   },
   enrollment_number: {
     type: String,
+    required: function () {
+      return this.role === "student";
+    },
     unique: true,
     sparse: true,
+  },
+  department: {
+    type: String,
+    required: function () {
+      return this.role === "faculty";
+    },
   },
   passwordChanged: {
     type: Boolean,

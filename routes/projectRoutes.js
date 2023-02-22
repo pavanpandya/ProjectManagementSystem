@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const auth = require("../middleware/auth");
-const { body, validationResult } = require("express-validator");
+const { body, validationResult, check } = require("express-validator");
 const User = require("../models/user");
 
 const Project = require("../models/project");
@@ -63,7 +63,8 @@ router.post(
     if (user.role === "student") {
       const project = await Project.findOne({
         students: req.user.userId,
-        status: { $ne: "completed" },
+        // if the project is not completed or rejected then the student cannot create another project
+        status: { $nin: ["completed", "rejected"] },
       });
       if (project) {
         return res
@@ -462,7 +463,7 @@ router.get("/faculty/:id", auth, async (req, res) => {
 });
 
 // activate project
-router.get(":id/active", auth, async (req, res) => {
+router.get("/:id/active", auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) {
@@ -486,7 +487,7 @@ router.get(":id/active", auth, async (req, res) => {
 });
 
 // deactivate project
-router.get(":id/inactive", auth, async (req, res) => {
+router.get("/:id/inactive", auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) {
@@ -534,7 +535,6 @@ router.get("/faculty", auth, async (req, res) => {
   }
 });
 
-
 //faculty can assign project to himself
 router.put("/assign/:id", auth, async (req, res) => {
   try {
@@ -561,4 +561,80 @@ router.put("/assign/:id", auth, async (req, res) => {
   }
 });
 
+// @route   GET api/projects/:id/repository-link
+// @desc    Get the github repository link for a project
+// @access  Private
+router.get("/:id/repository-link", auth, async (req, res) => {
+  try {
+    let project = await Project.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    res.json(project.repository_link);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   PUT api/projects/:id/repository-link
+// @desc    Update the github repository link for a project
+// @access  Private
+router.put(
+  "/:id/repository-link",
+  [
+    auth,
+    check(
+      "repository_link",
+      "Please enter a valid github repository link"
+    ).isURL(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { repository_link } = req.body;
+
+    try {
+      let project = await Project.findById(req.params.id);
+
+      if (!project) {
+        return res.status(404).json({ msg: "Project not found" });
+      }
+
+      project.repository_link = repository_link;
+      await project.save();
+
+      res.json(project);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+// @route   DELETE api/projects/:id/repository-link
+// @desc    Delete the github repository link for a project
+// @access  Private
+router.delete("/:id/repository-link", auth, async (req, res) => {
+  try {
+    let project = await Project.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({ msg: "Project not found" });
+    }
+
+    project.repository_link = "";
+    await project.save();
+
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;

@@ -6,6 +6,7 @@ const auth = require("../middleware/auth");
 const multer = require("multer");
 const csvtojson = require("csvtojson");
 const storage = multer.memoryStorage();
+
 const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
@@ -308,7 +309,6 @@ router.post("/add-students", auth, upload.single("file"), async (req, res) => {
   try {
     // only admin or faculties can add students
     const user = await User.findById(req.user.userId);
-    console.log(user);
     if (user.role !== "admin" && user.role !== "faculty") {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -322,7 +322,6 @@ router.post("/add-students", auth, upload.single("file"), async (req, res) => {
 
     // Create an array of user objects with the default password and the passwordChanged flag set to false
     const userObjects = students.map((student) => {
-      console.log(student);
       return {
         email: student.email,
         name: student.name,
@@ -349,10 +348,10 @@ router.post("/add-students", auth, upload.single("file"), async (req, res) => {
 });
 
 //add multiple faculties from csv or excel file
-router.post("/add-faculties", upload.single("file"), async (req, res) => {
+router.post("/add-faculties", auth, upload.single("file"), async (req, res) => {
   try {
-    // only admin can add faculties
     const user = await User.findById(req.user.userId);
+    // only admin can add faculties
     if (user.role !== "admin") {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -361,7 +360,7 @@ router.post("/add-faculties", upload.single("file"), async (req, res) => {
     const faculties = await csvtojson({
       // ignore first row
       ignoreEmpty: true,
-      ignoreColumns: /(name,email)/,
+      ignoreColumns: /(name,email, department)/,
     }).fromString(req.file.buffer.toString());
 
     // Create an array of user objects with the default password and the passwordChanged flag set to false
@@ -370,6 +369,7 @@ router.post("/add-faculties", upload.single("file"), async (req, res) => {
       return {
         email: faculty.email,
         name: faculty.name,
+        department: faculty.department,
         role: "faculty",
         password: process.env.DEFAULT_PASSWORD,
         passwordChanged: false,
@@ -388,6 +388,29 @@ router.post("/add-faculties", upload.single("file"), async (req, res) => {
     if (req.file && req.file.buffer) {
       req.file.buffer = null;
     }
+  }
+});
+
+router.post("/logout", (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "You are not logged in" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Here you can perform additional checks to ensure that the token is still valid,
+    // such as checking if the user is still active or if the token has been blacklisted
+
+    res.clearCookie("token"); // Clear the cookie that holds the bearer token
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Invalid token" });
   }
 });
 
