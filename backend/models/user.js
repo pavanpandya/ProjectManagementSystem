@@ -50,9 +50,7 @@ const UserSchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: function () {
-      return this.role === "faculty";
-    },
+    required: true,
   },
   passwordChanged: {
     type: Boolean,

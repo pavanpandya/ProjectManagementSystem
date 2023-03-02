@@ -228,6 +228,7 @@ router.put("/profile", auth, async (req, res) => {
     // Update user profile
     user.name = req.body.name;
     user.email = req.body.email;
+    user.department = req.body.department;
     // if student, update enrollment number
     if (user.role === "student") {
       user.enrollment_number = req.body.enrollment_number;
@@ -308,6 +309,121 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
+//update student route (only for admins and faculties)
+router.put("/student/:id", auth, async (req, res) => {
+  try {
+    // Find user by ID
+    const user = await User.findById(req.params.id);
+    
+    // If user doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // check if user is admin or faculty
+    if (req.user.role !== "admin" && req.user.role !== "faculty") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Update user profile
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.department = req.body.department;
+    user.enrollment_number = req.body.enrollment_number;
+
+    // Save updated user to database
+    await user.save();
+
+    res.status(200).json({ message: "Profile updated" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//update faculty route (only for admins)
+router.put("/faculty/:id", auth, async (req, res) => {
+  try {
+    // Find user by ID
+    const user = await User.findById(req.params.id);
+    
+    // If user doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // check if user is admin
+    if (req.user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Update user profile
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.department = req.body.department;
+
+    // Save updated user to database
+    await user.save();
+
+    res.status(200).json({ message: "Profile updated" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// delete student route (only for admins and faculties)
+router.delete("/student/:id", auth, async (req, res) => {
+  try {
+    // Find user by ID
+    const user = await User.findById(req.params.id);
+
+    // If user doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // check if user is admin or faculty
+    if (req.user.role !== "admin" && req.user.role !== "faculty") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Delete user from database
+    await user.remove();
+
+    res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// delete faculty route (only for admins)
+router.delete("/faculty/:id", auth, async (req, res) => {
+  try {
+    // Find user by ID
+    const user = await User.findById(req.params.id);
+
+    // If user doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // check if user is admin
+    if (req.user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Delete user from database
+    await user.remove();
+
+    res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // add multiple students from csv or excel file
 router.post("/add-students", auth, upload.single("file"), async (req, res) => {
   try {
@@ -321,7 +437,7 @@ router.post("/add-students", auth, upload.single("file"), async (req, res) => {
     const students = await csvtojson({
       // ignore first row
       ignoreEmpty: true,
-      ignoreColumns: /(email, name, enrollment_number)/,
+      ignoreColumns: /(email, name, enrollment_number, department)/,
     }).fromString(req.file.buffer.toString());
 
     // Create an array of user objects with the default password and the passwordChanged flag set to false
@@ -350,6 +466,33 @@ router.post("/add-students", auth, upload.single("file"), async (req, res) => {
     }
   }
 });
+
+//reset password route (only for admins)
+router.post("/reset-password/:id", auth, async (req, res) => {
+  try {
+    // only admin or faculties can reset password
+    const user = await User.findById(req.user.userId);
+
+    if (user.role !== "admin" ) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // reset password to default password for particular user
+    const userToReset = await User.findById(req.params.id);
+    userToReset.password = process.env.DEFAULT_PASSWORD;
+    userToReset.passwordChanged = false;
+
+    // Save updated user to database
+    await userToReset.save();
+
+    res.status(200).json({ message: "Password reset" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 //add multiple faculties from csv or excel file
 router.post("/add-faculties", auth, upload.single("file"), async (req, res) => {
