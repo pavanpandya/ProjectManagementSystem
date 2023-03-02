@@ -360,14 +360,14 @@ router.put("/student/:id", auth, async (req, res) => {
   try {
     // Find user by ID
     const user = await User.findById(req.params.id);
-    
+    const role = await User.findById(req.user.userId);
     // If user doesn't exist, return an error
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // check if user is admin or faculty
-    if (req.user.role !== "admin" && req.user.role !== "faculty") {
+    if (role.role !== "admin" && role.role !== "faculty") {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
