@@ -309,6 +309,52 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
+//get student route by id(only for admins and faculties)
+router.get("/student/:id", auth, async (req, res) => {
+  try {
+    // Find user by ID
+    const user = await User.findById(req.params.id);
+
+    // If user doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // check if user is admin or faculty
+    if (req.user.role !== "admin" && req.user.role !== "faculty") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    // get student without password
+    res.status(200).json({ user: user.select("-password") });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//get faculty route by id(only for admins)
+router.get("/faculty/:id", auth, async (req, res) => {
+  try {
+    // Find user by ID
+    const user = await User.findById(req.params.id);
+
+    // If user doesn't exist, return an error
+    if (!user) {
+      return res.status(404).json({ message: "User not found" }); 
+    }
+
+    // check if user is admin
+    if (req.user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    // get faculty without password
+    res.status(200).json({ user: user.select("-password") });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 //update student route (only for admins and faculties)
 router.put("/student/:id", auth, async (req, res) => {
   try {

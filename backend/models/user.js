@@ -50,6 +50,7 @@ const UserSchema = new mongoose.Schema({
   },
   department: {
     type: String,
+    default: "CE",
     required: true,
   },
   passwordChanged: {
