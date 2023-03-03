@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
+// env file is located in the root directory
+const dotenv = require("dotenv").config({ path: "../.env" }); 
 const path = require("path");
 
 const userRoutes = require("./routes/userRoutes");
@@ -11,7 +12,8 @@ const kanboardRoutes = require("./routes/kanboardRoutes");
 const app = express();
 
 // Connect to MongoDB database
-dotenv.config();
+// my .env file is located in the root directory
+// dotenv.config();
 mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGODB_URI)
