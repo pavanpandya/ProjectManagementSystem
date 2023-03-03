@@ -43,6 +43,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server error" });
 });
 
+// get api for testing
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 // Start server
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server listening on port ${port}`));
