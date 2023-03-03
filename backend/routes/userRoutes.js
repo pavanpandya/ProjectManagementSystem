@@ -36,6 +36,7 @@ router.post("/login", async (req, res) => {
     // If the user has not changed their password yet, prompt them to do so
     if (!user.passwordChanged) {
       return res.status(200).json({
+        id: user._id,
         message:
           "Please change your password by calling the /api/users/change-password route",
         email: user.email,
