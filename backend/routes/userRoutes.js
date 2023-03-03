@@ -338,13 +338,15 @@ router.get("/faculty/:id", auth, async (req, res) => {
     // Find user by ID
     const user = await User.findById(req.params.id);
 
+    const role = await User.findById(req.user.userId);
+
     // If user doesn't exist, return an error
     if (!user) {
       return res.status(404).json({ message: "User not found" }); 
     }
 
     // check if user is admin
-    if (req.user.role !== "admin") {
+    if (role.role !== "admin") {
       return res.status(401).json({ message: "Unauthorized" });
     }
     // get faculty without password
@@ -451,6 +453,7 @@ router.delete("/faculty/:id", auth, async (req, res) => {
   try {
     // Find user by ID
     const user = await User.findById(req.params.id);
+
 
     // If user doesn't exist, return an error
     if (!user) {
