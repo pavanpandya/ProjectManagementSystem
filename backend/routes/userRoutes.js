@@ -498,6 +498,7 @@ router.post("/add-students", auth, upload.single("file"), async (req, res) => {
         name: student.name,
         role: "student",
         enrollment_number: student.enrollment_number,
+        department: student.department,
         password: process.env.DEFAULT_PASSWORD,
         passwordChanged: false,
       };
