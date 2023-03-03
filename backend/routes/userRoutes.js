@@ -613,4 +613,76 @@ router.post("/logout", (req, res) => {
   }
 });
 
+//add single student route
+router.post("/add-student", auth, async (req, res) => {
+  try {
+    // only admin or faculties can add students
+    const user = await User.findById(req.user.userId);
+    if (user.role !== "admin" && user.role !== "faculty") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Create an array of user objects with the default password and the passwordChanged flag set to false
+    const userObjects = {
+      email: req.body.email,
+      name: req.body.name,
+      role: "student",
+      enrollment_number: req.body.enrollment_number,
+      department: req.body.department,
+      password: process.env.DEFAULT_PASSWORD,
+      passwordChanged: false,
+    };
+
+    // Insert the user objects into the database
+    const result = await User.insertMany(userObjects);
+
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+//add single faculty route
+router.post("/add-faculty", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    // only admin can add faculties
+    if (user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Create an array of user objects with the default password and the passwordChanged flag set to false
+    const userObjects = {
+      email: req.body.email,
+      name: req.body.name,
+      department: req.body.department,
+      role: "faculty",
+      password: process.env.DEFAULT_PASSWORD,
+      passwordChanged: false,
+    };
+
+    // Insert the user objects into the database
+    const result = await User.insertMany(userObjects);
+
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+//secret api for getting all users without auth
+router.get("/all", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 module.exports = router;
